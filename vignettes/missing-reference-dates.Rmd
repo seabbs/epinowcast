@@ -1,0 +1,126 @@
+---
+title: "Bayesian nowcasting with missing reference dates"
+description: "A demonstration of nowcasting with missing reference dates on simulated data using epinowcast's generative missingness model."
+author: Adrian Lison
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bayesian nowcasting with missing reference dates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Packages
+
+We use the `epinowcast` package, `data.table`, `purrr`, `lubridate`, and `dplyr` for data manipulation, `ggplot2` for plotting, `knitr` to produce tables of output, `loo` to approximately evaluate out of sample performance and `scoringutils` to evaluate out of sample forecast performance.
+
+```{r}
+library(epinowcast)
+library(data.table)
+library(purrr)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(loo)
+library(scoringutils)
+library(knitr)
+```
+
+This vignette includes models that take upwards of 10 minutes to fit to data on a moderately equipped laptop. To speed up model fitting if more CPUs are available set the number of threads used per chain to half the number of real cores available (here 2 as we are using 2 MCMC chains and have 4 real cores). Note this may cause conflicts with other processes running on your computer and if this is an issue reduce the number of threads used.
+
+```{r}
+threads <- 2
+```
+
+# Data
+Load simulated data and plot the cases with known reference date over time
+```{r}
+sim_data <- readRDS("../data/sim_missing.rds")
+
+sim_aggregated <- sim_data$linelist %>% 
+  filter(hospitalized) %>%
+  mutate(across(ends_with("time"),as.Date,lubridate::origin)) %>% 
+  mutate(onset_time = as.Date(ifelse(onset_known,onset_time,NA),lubridate::origin)) %>% 
+  rename(reference_date = onset_time, report_date = rep_time) %>% 
+  mutate(random_group = sample(letters[1:3],n(),replace=T)) %>% # create random groups
+  count(reference_date, random_group, report_date, name = "confirm") %>% 
+  arrange(reference_date, random_group, report_date) %>% 
+  group_by(random_group, reference_date) %>% 
+  mutate(confirm = cumsum(confirm))
+
+ggplot(sim_aggregated, aes(x=reference_date)) + geom_bar() + theme_bw() + xlab("Reference date")
+```
+
+Create an artificial snapshot from an earlier point in time to be nowcasted and plot the cases with known reference date over time
+```{r}
+sim_nowcast <- enw_retrospective_data(
+  as.data.table(sim_aggregated),
+  rep_date = as.Date("1970-05-15"), ref_date = as.Date("1970-05-15") - 60
+)
+ggplot(sim_nowcast, aes(x=reference_date)) + geom_bar()  + theme_bw() + xlab("Reference date")
+```
+
+# Data preprocessing
+```{r}
+pobs <- enw_preprocess_data(sim_nowcast, max_delay = 30, by = "random_group", min_report_date = "1970-03-15")
+pobs
+```
+
+# Model fitting 
+
+```{r}
+multithread_model <- enw_model(threads = TRUE, profile = T, force_recompile = F)
+```
+
+```{r}
+options(mc.cores = 4)
+nowcast <- epinowcast(pobs,
+  model = multithread_model,
+  save_warmup = FALSE,
+  output_loglik = TRUE, pp = TRUE,
+  chains = 2, threads_per_chain = 1, parallel_chains = 4,
+  show_messages = TRUE, refresh = 50, iter_sampling=1000, iter_warmup=1000
+)
+```
+
+# Results
+
+Alpha
+```{r}
+nowcast$fit[[1]] %>% 
+  tidybayes::spread_draws(alpha[g,i]) %>% 
+  tidybayes::summarise_draws()
+```
+Expected cases
+```{r}
+nowcast$fit[[1]] %>% 
+  tidybayes::spread_draws(imp_obs[g,t]) %>% 
+  tidybayes::summarise_draws() %>% 
+  ggplot(aes(x=t,y=mean)) + geom_point() + facet_grid(~g)
+```
+Observed cases with missing reference date (by reporting date)
+```{r}
+nowcast$new_confirm_missing[[1]] %>% 
+  filter(new_confirm<100) %>% 
+  ggplot(aes(x=report_date,y=new_confirm)) + geom_point() + facet_grid(~group)
+```
+Estimated cases with missing reference date
+```{r}
+nowcast$fit[[1]] %>% 
+  tidybayes::spread_draws(pp_inf_obs_miss_rep[t,g]) %>% 
+  tidybayes::summarise_draws()
+
+nowcast$fit[[1]] %>% 
+  tidybayes::spread_draws(pp_inf_obs_miss_rep[t,g]) %>% 
+  tidybayes::summarise_draws() %>% 
+  ggplot(aes(x=t,y=mean)) + geom_ribbon(aes(ymin=q5,ymax=q95),alpha=0.2) + geom_point() + facet_grid(~g)
+```
+
+Log-likelihood for missingness
+```{r}
+nowcast$fit[[1]]$summary("log_lik_miss")
+```
+Plot nowcast
+```{r}
+plot(nowcast, enw_latest_data(as.data.table(sim_aggregated %>% filter(!is.na(reference_date),reference_date>"1970-04-15")))) +
+  facet_wrap(vars(random_group), scales = "free_y")
+```
