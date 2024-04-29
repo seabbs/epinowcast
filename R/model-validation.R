@@ -81,7 +81,7 @@ enw_score_nowcast <- function(nowcast, latest_obs, log = FALSE,
     scoringutils::check_forecasts(long_nowcast)
   }
 
-  scores <- scoringutils::score(long_nowcast, ...)
+  scores <- scoringutils::score(scoringutils::as_forecast(long_nowcast), ...)
   numeric_cols <- colnames(scores)[sapply(scores, is.numeric)]
   scores <- scores[, (numeric_cols) := lapply(.SD, signif, digits = round_to),
     .SDcols = numeric_cols
