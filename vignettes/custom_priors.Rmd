@@ -1,0 +1,156 @@
+---
+title: Setting up custom priors
+description: "How to pass custom priors to model modules"
+author: Epinowcast Team
+output: 
+  bookdown::html_vignette2:
+    fig_caption: yes
+    code_folding: show
+pkgdown:
+  as_is: true
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa-numeric-superscript-brackets.csl
+vignette: >
+  %\VignetteIndexEntry{Setting up custom priors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+The various modules in `epinowcast()`, that is `enw_reference()`, `enw_expectation()`, `enw_report()`, `enw_missing()`, and `enw_obs()` have default priors that are set internally. However, these can be customised.
+
+This vignette explains how to define custom priors for the various modules in the `epinowcast()` function.
+
+# Default priors
+
+We will start by describing the default priors for each model component. This will help you understand the structure of the priors and how to customise them.
+
+## Reference date module
+
+The reference date model module has the following priors.
+```{r reference_prior, echo = FALSE}
+enw_reference_prior <- data.frame(
+  variable = c(
+    "refp_mean_int", "refp_sd_int", "refp_mean_beta_sd", "refp_sd_beta_sd",
+    "refnp_int", "refnp_beta_sd"
+  ),
+  description = c(
+    "Log mean intercept for parametric reference date delay",
+    "Log standard deviation for the parametric reference date delay",
+    "Standard deviation of scaled pooled parametric mean effects",
+    "Standard deviation of scaled pooled parametric sd effects",
+    "Intercept for non-parametric reference date delay",
+    "Standard deviation of scaled pooled non-parametric effects"
+  ),
+  distribution = c(
+    "Normal", rep("Zero truncated normal", 3),
+    "Normal", "Zero truncated normal"
+  ),
+  mean = c(1, 0.5, 0, 0, 0, 0),
+  sd = 1,
+  stringsAsFactors = FALSE
+)
+knitr::kable(enw_reference_prior)
+```
+## Reporting date module
+
+The reporting date model module has a single prior.
+```{r reporting_prior, echo = FALSE}
+enw_report_prior <- data.frame(
+  variable = "rep_beta_sd",
+  description = "Standard deviation of scaled pooled report date effects",
+  distribution = "Zero truncated normal",
+  mean = 0,
+  sd = 1,
+  stringsAsFactors = FALSE
+)
+knitr::kable(enw_report_prior)
+```
+
+
+## Expectation module
+
+The expectation module has three priors.
+
+```{r expectation_prior, echo = FALSE}
+enw_expectation_prior <- data.frame(
+    variable = c(
+      "expr_r_int", "expr_beta_sd", "expr_lelatent_int", "expl_beta_sd"
+    ),
+    description = c(
+      "Intercept of the log growth rate",
+      "Standard deviation of scaled pooled log growth rate effects",
+      "Intercept for initial log observations (ordered by group and then time)",
+      "Standard deviation of scaled pooled log growth rate effects"
+    ),
+    distribution = c(
+      "Normal", "Zero truncated normal", "Normal", "Zero truncated normal"
+    ),
+    mean = c(0, 0, "I dont understand", 0),
+    sd = c(0.2, 1, 1, 1),
+  stringsAsFactors = FALSE
+  )
+knitr::kable(enw_expectation_prior)
+```
+
+# Missing reference data model module
+
+The missing reference data module has a two priors.
+
+```{r missing_prior, echo = FALSE}
+enw_missing_prior <- data.table::data.table(
+  variable = c("miss_int", "miss_beta_sd"),
+  description = c(
+    "Intercept on the logit scale for the proportion missing reference dates",
+    "Standard deviation of scaled pooled logit missing reference date effects"
+  ),
+  distribution = c("Normal", "Zero truncated normal"),
+  mean = c(0, 0),
+  sd = c(1, 1),
+  stringsAsFactors = FALSE
+)
+knitr::kable(enw_missing_prior)
+```
+
+# Observation module
+
+The observation module has a single prior.
+
+```{r observation_prior, echo = FALSE}
+enw_obs_prior <- data.frame(
+  variable = "sqrt_phi",
+  description = "One over the square root of the reporting overdispersion",
+  distribution = "Zero truncated normal",
+  mean = 0,
+  sd = 1,
+  stringsAsFactors = FALSE
+)
+knitr::kable(enw_obs_prior)
+```
+
+## Customising priors
+
+To customise the priors, you need to specify the `prior` data.frame in the `epinowcast()` function. `prior` expects a data.frame with the following columns:
+
+- `variable`: the name of the variable to be customised (See the tables above for the variable names)
+- `mean`: the mean of the prior distribution
+- `sd`: the standard deviation of the prior distribution
+
+Here is an example of how to customise the priors for the `refp_mean_int` in the reference model and `rep_beta_sd` in the reporting model. The `mean` and `sd` columns are the only required columns in the `prior` data.frame. The `description` and `distribution` columns are optional and are used to provide a description of the variable and the distribution of the prior, respectively.
+```{r custom_priors}
+custom_priors <- data.frame(
+  variable = c("refp_mean_int", "rep_beta_sd"),
+  mean = c(1, 0.3),
+  sd = c(1, 1),
+  stringsAsFactors = FALSE
+)
+custom_priors
+```
+
+When `custom_priors` is passed to the `epinowcast()` function, the priors for `refp_mean_int` and `rep_beta_sd` will be set to the values specified in the `custom_priors` data.frame and the rest of the priors will be set to the default values as shown in the table above.

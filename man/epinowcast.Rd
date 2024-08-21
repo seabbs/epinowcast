@@ -54,7 +54,8 @@ further details.}
 \code{variable}, \code{mean}, \code{sd} describing normal priors. Priors in the
 appropriate format are returned by \code{\link[=enw_reference]{enw_reference()}} as well as by
 other similar model specification functions. Priors in this data.frame
-replace the default priors specified by each model component.}
+replace the default priors specified by each model component. See the
+package vignette for more details on how to specify \code{priors}.}
 
 \item{...}{Additional model modules to pass to \code{model}. User modules may
 be used but currently require the supplied \code{model} to be adapted.}

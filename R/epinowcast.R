@@ -38,7 +38,8 @@
 #' `variable`, `mean`, `sd` describing normal priors. Priors in the
 #' appropriate format are returned by [enw_reference()] as well as by
 #' other similar model specification functions. Priors in this data.frame
-#' replace the default priors specified by each model component.
+#' replace the default priors specified by each model component. See the
+#' package vignette for more details on how to specify `priors`.
 #'
 #' @param ... Additional model modules to pass to `model`. User modules may
 #' be used but currently require the supplied `model` to be adapted.
