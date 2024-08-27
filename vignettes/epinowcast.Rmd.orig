@@ -148,7 +148,7 @@ report_module <- enw_report(~ (1 | day_of_week), data = pobs)
 As `epinowcast` uses `cmdstan` to fit its models, it is necessary to first compile the model. This can be done using the `enw_model()` function. Note that this step can be left to `epinowcast`, but here we want to use multiple cores per chain to speed up model fitting and therefore compile the model with this feature turned on.
 
 ```{r}
-model <- enw_model(threads = TRUE)
+model <- enw_model(threads = FALSE)
 ```
 
 # Bringing it all together: Fitting the model
@@ -162,8 +162,7 @@ nowcast <- epinowcast(data = pobs,
   reference = reference_module,
   report = report_module,
   fit = enw_fit_opts(
-    save_warmup = FALSE, pp = TRUE,
-    chains = 2, threads_per_chain = 2,
+    save_warmup = FALSE, pp = TRUE, chains = 2,
     iter_sampling = 500, iter_warmup = 500,
     show_messages = interactive()
   ),

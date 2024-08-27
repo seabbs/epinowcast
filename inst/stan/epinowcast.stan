@@ -208,9 +208,9 @@ parameters {
 transformed parameters{
   // Expectation model
   vector[expr_t * g] r; // growth rate of observations (log)
-  array[g] vector[expr_ft]  exp_llatent; // expected latent cases (log)
+  array[g] vector<upper = 25>[expr_ft]  exp_llatent; // expected latent cases (log)
   vector[expl_obs ? expl_fnindex : 0] expl_prop; // latent-to-obs proportion
-  array[g] vector[t]  exp_lobs; // expected obs by reference date (log)
+  array[g] vector<upper = 25>[t]  exp_lobs; // expected obs by reference date (log)
   
   // Reference model
   // Parametric reference model

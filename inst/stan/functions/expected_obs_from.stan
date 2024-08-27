@@ -50,6 +50,12 @@ vector expected_obs_from_index(int i, array[] vector imp_obs,
                                vector refnp_lh, int ref_np, int p) {
   vector[l] lh;
   vector[l] log_exp_obs;
+  if (imp_obs[g][t] == negative_infinity() || imp_obs[g][t] == positive_infinity()) {
+    reject("imp_obs for group ", g, " and time ", t, " is -Inf or Inf");
+  }
+  if (is_nan(imp_obs[g][t])) {
+    reject("imp_obs for group ", g, " and time ", t, " is NaN");
+  }
   profile("model_likelihood_hazard_allocations") {
     lh = combine_logit_hazards(
       i, rdlurd, srdlh, refp_lh, dpmfs, ref_p, rep_h, g, t, l, refnp_lh, ref_np,
