@@ -463,7 +463,8 @@ enw_filter_reference_dates <- function(obs, earliest_date, include_days,
         "`include_days` and `earliest_date` can't both be specified."
       )
     }
-    earliest_date <- max(filt_obs$reference_date, na.rm = TRUE) - include_days
+    earliest_date <- max(filt_obs$reference_date, na.rm = TRUE) - 
+      include_days + 1
   }
   if (!missing(include_days) || !missing(earliest_date)) {
     filt_obs <- filt_obs[

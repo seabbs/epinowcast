@@ -15,10 +15,10 @@ test_that("enw_filter_reference_dates filters as expected", {
     germany_covid19_hosp,
     include_days = 10
   )
-  expect_identical(max(filt_days$report_date), as.IDate("2021-10-20"))
-  expect_identical(max(filt_days$reference_date), as.IDate("2021-10-20"))
-  expect_identical(min(filt_days$report_date), as.IDate("2021-10-10"))
-  expect_identical(min(filt_days$reference_date), as.IDate("2021-10-10"))
+  expect_equal(max(filt_days$report_date), as.IDate("2021-10-20"))
+  expect_equal(max(filt_days$reference_date), as.IDate("2021-10-20"))
+  expect_equal(min(filt_days$report_date), as.IDate("2021-10-11"))
+  expect_equal(min(filt_days$reference_date), as.IDate("2021-10-11"))
 
   expect_error(enw_filter_reference_dates(
     germany_covid19_hosp,
@@ -57,9 +57,9 @@ test_that("enw_filter_reference_dates filters as expected when data is present w
   expect_identical(
     max(filt_days$reference_date, na.rm = TRUE), as.IDate("2021-10-20")
   )
-  expect_identical(min(filt_days$report_date), as.IDate("2021-10-10"))
-  expect_identical(
-    min(filt_days$reference_date, na.rm = TRUE), as.IDate("2021-10-10")
+  expect_equal(min(filt_days$report_date), as.IDate("2021-10-11"))
+  expect_equal(
+    min(filt_days$reference_date, na.rm = TRUE), as.IDate("2021-10-11")
   )
   filt_date <- enw_filter_reference_dates(
     nat_germany_hosp,

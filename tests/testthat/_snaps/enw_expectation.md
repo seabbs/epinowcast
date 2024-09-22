@@ -992,36 +992,33 @@
       $data_raw
       $data_raw$r
                 date .group location age_group delay day_of_week day week month
-       1: 2021-08-13      1       DE     00-04     0      Friday   1    0     0
-       2: 2021-08-14      1       DE     00-04     0    Saturday   2    0     0
-       3: 2021-08-15      1       DE     00-04     0      Sunday   3    0     0
-       4: 2021-08-16      1       DE     00-04     0      Monday   4    0     0
-       5: 2021-08-17      1       DE     00-04     0     Tuesday   5    0     0
-       6: 2021-08-18      1       DE     00-04     0   Wednesday   6    0     0
-       7: 2021-08-19      1       DE     00-04     0    Thursday   7    1     0
-       8: 2021-08-20      1       DE     00-04     0      Friday   8    1     0
-       9: 2021-08-21      1       DE     00-04     0    Saturday   9    1     0
-      10: 2021-08-22      1       DE     00-04     0      Sunday  10    1     0
-      11: 2021-08-13      2       DE       00+     0      Friday   1    0     0
-      12: 2021-08-14      2       DE       00+     0    Saturday   2    0     0
-      13: 2021-08-15      2       DE       00+     0      Sunday   3    0     0
-      14: 2021-08-16      2       DE       00+     0      Monday   4    0     0
-      15: 2021-08-17      2       DE       00+     0     Tuesday   5    0     0
-      16: 2021-08-18      2       DE       00+     0   Wednesday   6    0     0
-      17: 2021-08-19      2       DE       00+     0    Thursday   7    1     0
-      18: 2021-08-20      2       DE       00+     0      Friday   8    1     0
-      19: 2021-08-21      2       DE       00+     0    Saturday   9    1     0
-      20: 2021-08-22      2       DE       00+     0      Sunday  10    1     0
-      21: 2021-08-13      3       DE       80+     0      Friday   1    0     0
-      22: 2021-08-14      3       DE       80+     0    Saturday   2    0     0
-      23: 2021-08-15      3       DE       80+     0      Sunday   3    0     0
-      24: 2021-08-16      3       DE       80+     0      Monday   4    0     0
-      25: 2021-08-17      3       DE       80+     0     Tuesday   5    0     0
-      26: 2021-08-18      3       DE       80+     0   Wednesday   6    0     0
-      27: 2021-08-19      3       DE       80+     0    Thursday   7    1     0
-      28: 2021-08-20      3       DE       80+     0      Friday   8    1     0
-      29: 2021-08-21      3       DE       80+     0    Saturday   9    1     0
-      30: 2021-08-22      3       DE       80+     0      Sunday  10    1     0
+       1: 2021-08-14      1       DE     00-04     0    Saturday   1    0     0
+       2: 2021-08-15      1       DE     00-04     0      Sunday   2    0     0
+       3: 2021-08-16      1       DE     00-04     0      Monday   3    0     0
+       4: 2021-08-17      1       DE     00-04     0     Tuesday   4    0     0
+       5: 2021-08-18      1       DE     00-04     0   Wednesday   5    0     0
+       6: 2021-08-19      1       DE     00-04     0    Thursday   6    0     0
+       7: 2021-08-20      1       DE     00-04     0      Friday   7    1     0
+       8: 2021-08-21      1       DE     00-04     0    Saturday   8    1     0
+       9: 2021-08-22      1       DE     00-04     0      Sunday   9    1     0
+      10: 2021-08-14      2       DE       00+     0    Saturday   1    0     0
+      11: 2021-08-15      2       DE       00+     0      Sunday   2    0     0
+      12: 2021-08-16      2       DE       00+     0      Monday   3    0     0
+      13: 2021-08-17      2       DE       00+     0     Tuesday   4    0     0
+      14: 2021-08-18      2       DE       00+     0   Wednesday   5    0     0
+      15: 2021-08-19      2       DE       00+     0    Thursday   6    0     0
+      16: 2021-08-20      2       DE       00+     0      Friday   7    1     0
+      17: 2021-08-21      2       DE       00+     0    Saturday   8    1     0
+      18: 2021-08-22      2       DE       00+     0      Sunday   9    1     0
+      19: 2021-08-14      3       DE       80+     0    Saturday   1    0     0
+      20: 2021-08-15      3       DE       80+     0      Sunday   2    0     0
+      21: 2021-08-16      3       DE       80+     0      Monday   3    0     0
+      22: 2021-08-17      3       DE       80+     0     Tuesday   4    0     0
+      23: 2021-08-18      3       DE       80+     0   Wednesday   5    0     0
+      24: 2021-08-19      3       DE       80+     0    Thursday   6    0     0
+      25: 2021-08-20      3       DE       80+     0      Friday   7    1     0
+      26: 2021-08-21      3       DE       80+     0    Saturday   8    1     0
+      27: 2021-08-22      3       DE       80+     0      Sunday   9    1     0
                 date .group location age_group delay day_of_week day week month
           observed
        1:     TRUE
@@ -1051,46 +1048,40 @@
       25:     TRUE
       26:     TRUE
       27:     TRUE
-      28:     TRUE
-      29:     TRUE
-      30:     TRUE
           observed
       
       $data_raw$observation
                 date .group location age_group delay day_of_week day week month
-       1: 2021-08-12      1       DE     00-04     0    Thursday   0    0     0
-       2: 2021-08-13      1       DE     00-04     0      Friday   1    0     0
-       3: 2021-08-14      1       DE     00-04     0    Saturday   2    0     0
-       4: 2021-08-15      1       DE     00-04     0      Sunday   3    0     0
-       5: 2021-08-16      1       DE     00-04     0      Monday   4    0     0
-       6: 2021-08-17      1       DE     00-04     0     Tuesday   5    0     0
-       7: 2021-08-18      1       DE     00-04     0   Wednesday   6    0     0
-       8: 2021-08-19      1       DE     00-04     0    Thursday   7    1     0
-       9: 2021-08-20      1       DE     00-04     0      Friday   8    1     0
-      10: 2021-08-21      1       DE     00-04     0    Saturday   9    1     0
-      11: 2021-08-22      1       DE     00-04     0      Sunday  10    1     0
-      12: 2021-08-12      2       DE       00+     0    Thursday   0    0     0
-      13: 2021-08-13      2       DE       00+     0      Friday   1    0     0
-      14: 2021-08-14      2       DE       00+     0    Saturday   2    0     0
-      15: 2021-08-15      2       DE       00+     0      Sunday   3    0     0
-      16: 2021-08-16      2       DE       00+     0      Monday   4    0     0
-      17: 2021-08-17      2       DE       00+     0     Tuesday   5    0     0
-      18: 2021-08-18      2       DE       00+     0   Wednesday   6    0     0
-      19: 2021-08-19      2       DE       00+     0    Thursday   7    1     0
-      20: 2021-08-20      2       DE       00+     0      Friday   8    1     0
-      21: 2021-08-21      2       DE       00+     0    Saturday   9    1     0
-      22: 2021-08-22      2       DE       00+     0      Sunday  10    1     0
-      23: 2021-08-12      3       DE       80+     0    Thursday   0    0     0
-      24: 2021-08-13      3       DE       80+     0      Friday   1    0     0
-      25: 2021-08-14      3       DE       80+     0    Saturday   2    0     0
-      26: 2021-08-15      3       DE       80+     0      Sunday   3    0     0
-      27: 2021-08-16      3       DE       80+     0      Monday   4    0     0
-      28: 2021-08-17      3       DE       80+     0     Tuesday   5    0     0
-      29: 2021-08-18      3       DE       80+     0   Wednesday   6    0     0
-      30: 2021-08-19      3       DE       80+     0    Thursday   7    1     0
-      31: 2021-08-20      3       DE       80+     0      Friday   8    1     0
-      32: 2021-08-21      3       DE       80+     0    Saturday   9    1     0
-      33: 2021-08-22      3       DE       80+     0      Sunday  10    1     0
+       1: 2021-08-13      1       DE     00-04     0      Friday   0    0     0
+       2: 2021-08-14      1       DE     00-04     0    Saturday   1    0     0
+       3: 2021-08-15      1       DE     00-04     0      Sunday   2    0     0
+       4: 2021-08-16      1       DE     00-04     0      Monday   3    0     0
+       5: 2021-08-17      1       DE     00-04     0     Tuesday   4    0     0
+       6: 2021-08-18      1       DE     00-04     0   Wednesday   5    0     0
+       7: 2021-08-19      1       DE     00-04     0    Thursday   6    0     0
+       8: 2021-08-20      1       DE     00-04     0      Friday   7    1     0
+       9: 2021-08-21      1       DE     00-04     0    Saturday   8    1     0
+      10: 2021-08-22      1       DE     00-04     0      Sunday   9    1     0
+      11: 2021-08-13      2       DE       00+     0      Friday   0    0     0
+      12: 2021-08-14      2       DE       00+     0    Saturday   1    0     0
+      13: 2021-08-15      2       DE       00+     0      Sunday   2    0     0
+      14: 2021-08-16      2       DE       00+     0      Monday   3    0     0
+      15: 2021-08-17      2       DE       00+     0     Tuesday   4    0     0
+      16: 2021-08-18      2       DE       00+     0   Wednesday   5    0     0
+      17: 2021-08-19      2       DE       00+     0    Thursday   6    0     0
+      18: 2021-08-20      2       DE       00+     0      Friday   7    1     0
+      19: 2021-08-21      2       DE       00+     0    Saturday   8    1     0
+      20: 2021-08-22      2       DE       00+     0      Sunday   9    1     0
+      21: 2021-08-13      3       DE       80+     0      Friday   0    0     0
+      22: 2021-08-14      3       DE       80+     0    Saturday   1    0     0
+      23: 2021-08-15      3       DE       80+     0      Sunday   2    0     0
+      24: 2021-08-16      3       DE       80+     0      Monday   3    0     0
+      25: 2021-08-17      3       DE       80+     0     Tuesday   4    0     0
+      26: 2021-08-18      3       DE       80+     0   Wednesday   5    0     0
+      27: 2021-08-19      3       DE       80+     0    Thursday   6    0     0
+      28: 2021-08-20      3       DE       80+     0      Friday   7    1     0
+      29: 2021-08-21      3       DE       80+     0    Saturday   8    1     0
+      30: 2021-08-22      3       DE       80+     0      Sunday   9    1     0
                 date .group location age_group delay day_of_week day week month
       
       
@@ -1105,16 +1096,16 @@
       [1] -0.1053605 -2.3025851
       
       $data$expr_t
-      [1] 10
+      [1] 9
       
       $data$expr_obs
       [1] 0
       
       $data$expr_g
-      [1]  0 10 20
+      [1]  0  9 18
       
       $data$expr_ft
-      [1] 12
+      [1] 11
       
       $data$expr_fdesign
          (Intercept) .group1 .group2 .group3
@@ -1127,7 +1118,7 @@
       7            1       1       0       0
       8            1       1       0       0
       9            1       1       0       0
-      10           1       1       0       0
+      10           1       0       1       0
       11           1       0       1       0
       12           1       0       1       0
       13           1       0       1       0
@@ -1136,8 +1127,8 @@
       16           1       0       1       0
       17           1       0       1       0
       18           1       0       1       0
-      19           1       0       1       0
-      20           1       0       1       0
+      19           1       0       0       1
+      20           1       0       0       1
       21           1       0       0       1
       22           1       0       0       1
       23           1       0       0       1
@@ -1145,9 +1136,6 @@
       25           1       0       0       1
       26           1       0       0       1
       27           1       0       0       1
-      28           1       0       0       1
-      29           1       0       0       1
-      30           1       0       0       1
       attr(,"assign")
       [1] 0 1 1 1
       attr(,"contrasts")
@@ -1162,14 +1150,14 @@
       [1] 1
       
       $data$expr_fnrow
-      [1] 30
+      [1] 27
       
       $data$expr_findex
        [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-      [26] 26 27 28 29 30
+      [26] 26 27
       
       $data$expr_fnindex
-      [1] 30
+      [1] 27
       
       $data$expr_fncol
       [1] 3
@@ -1189,23 +1177,23 @@
       [1] 2
       
       $data$expl_lrd_nw
-      [1] 22
+      [1] 20
       
       $data$expl_lrd_w
        [1] 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9
-      [20] 0.1 0.9 0.1
+      [20] 0.1
       
       $data$expl_lrd_nv
-      [1] 22
+      [1] 20
       
       $data$expl_lrd_v
-       [1]  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10 10 11 11 12
+       [1]  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10 10 11
       
       $data$expl_lrd_nu
-      [1] 13
+      [1] 12
       
       $data$expl_lrd_u
-       [1]  1  1  3  5  7  9 11 13 15 17 19 21 23
+       [1]  1  1  3  5  7  9 11 13 15 17 19 21
       
       $data$expl_obs
       [1] 1
@@ -1222,18 +1210,18 @@
       8            1             0             1             0             0
       9            1             0             1             0             0
       10           1             0             1             0             0
-      11           1             0             1             0             0
+      11           1             0             0             1             0
       12           1             0             0             1             0
       13           1             0             0             1             0
       14           1             0             0             1             0
       15           1             0             0             1             0
       16           1             0             0             1             0
       17           1             0             0             1             0
-      18           1             0             0             1             0
+      18           1             0             0             0             1
       19           1             0             0             0             1
       20           1             0             0             0             1
-      21           1             0             0             0             1
-      22           1             0             0             0             1
+      21           1             0             0             0             0
+      22           1             0             0             0             0
       23           1             0             0             0             0
       24           1             0             0             0             0
       25           1             0             0             0             0
@@ -1242,9 +1230,6 @@
       28           1             0             0             0             0
       29           1             0             0             0             0
       30           1             0             0             0             0
-      31           1             0             0             0             0
-      32           1             0             0             0             0
-      33           1             0             0             0             0
          week0:.group3 week1:.group3
       1              0             0
       2              0             0
@@ -1266,19 +1251,16 @@
       18             0             0
       19             0             0
       20             0             0
-      21             0             0
-      22             0             0
+      21             1             0
+      22             1             0
       23             1             0
       24             1             0
       25             1             0
       26             1             0
       27             1             0
-      28             1             0
-      29             1             0
+      28             0             1
+      29             0             1
       30             0             1
-      31             0             1
-      32             0             1
-      33             0             1
       attr(,"assign")
       [1] 0 1 1 1 1 1 1
       attr(,"contrasts")
@@ -1293,14 +1275,14 @@
       [1] 1
       
       $data$expl_fnrow
-      [1] 33
+      [1] 30
       
       $data$expl_findex
        [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
-      [26] 26 27 28 29 30 31 32 33
+      [26] 26 27 28 29 30
       
       $data$expl_fnindex
-      [1] 33
+      [1] 30
       
       $data$expl_fncol
       [1] 6
@@ -1344,12 +1326,12 @@
                   distribution mean  sd
       1:                Normal  0.0 0.2
       2: Zero truncated normal  0.0 1.0
-      3:                Normal  2.1 1.0
-      4:                Normal  2.1 1.0
-      5:                Normal  5.5 1.0
-      6:                Normal  5.5 1.0
-      7:                Normal  3.4 1.0
-      8:                Normal  3.4 1.0
+      3:                Normal  2.6 1.0
+      4:                Normal  2.6 1.0
+      5:                Normal  5.3 1.0
+      6:                Normal  5.3 1.0
+      7:                Normal  2.8 1.0
+      8:                Normal  2.8 1.0
       9: Zero truncated normal  0.0 1.0
       
 
