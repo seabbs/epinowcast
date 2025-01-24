@@ -10,9 +10,12 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+
 ^vignettes/cache$
 ^vignettes/germany-age-stratified-nowcasting.Rmd.orig\.Rmd\.orig$
 ^vignettes/precompile.R$
+^vignettes/Makefile$
+
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^codemeta\.json$
