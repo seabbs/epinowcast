@@ -132,11 +132,12 @@ If making use of our methodology or the methodology on which ours is based, plea
 
 
 
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 
-All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropenscilabs/allcontributors) following the [all-contributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
+All contributions to this project are gratefully acknowledged using the [`allcontributors` package](https://github.com/ropensci/allcontributors) following the [all-contributors](https://allcontributors.org) specification. Contributions of any kind are welcome!
 
 ### Code
 
@@ -169,7 +170,8 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Abeansrowning">beansrowning</a>, 
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Ajbracher">jbracher</a>, 
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Azsusswein">zsusswein</a>, 
-<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Achristinesangphet">christinesangphet</a>
+<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Achristinesangphet">christinesangphet</a>, 
+<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Arumackaaron">rumackaaron</a>
 
 
 
@@ -187,6 +189,7 @@ All contributions to this project are gratefully acknowledged using the [`allcon
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
 
 
 

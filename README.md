@@ -245,10 +245,9 @@ outline](https://package.epinowcast.org/articles/model.html). If you use
 <!-- markdownlint-disable -->
 
 All contributions to this project are gratefully acknowledged using the
-[`allcontributors`
-package](https://github.com/ropenscilabs/allcontributors) following the
-[all-contributors](https://allcontributors.org) specification.
-Contributions of any kind are welcome!
+[`allcontributors` package](https://github.com/ropensci/allcontributors)
+following the [all-contributors](https://allcontributors.org)
+specification. Contributions of any kind are welcome!
 
 ### Code
 
@@ -277,7 +276,8 @@ Contributions of any kind are welcome!
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Abeansrowning">beansrowning</a>,
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Ajbracher">jbracher</a>,
 <a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Azsusswein">zsusswein</a>,
-<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Achristinesangphet">christinesangphet</a>
+<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Achristinesangphet">christinesangphet</a>,
+<a href="https://github.com/epinowcast/epinowcast/issues?q=is%3Aissue+author%3Arumackaaron">rumackaaron</a>
 
 ### Issue Contributors
 
