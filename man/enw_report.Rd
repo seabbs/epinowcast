@@ -4,7 +4,7 @@
 \alias{enw_report}
 \title{Report date logit hazard reporting  model module}
 \usage{
-enw_report(non_parametric = ~0, structural = ~0, data)
+enw_report(non_parametric = ~0, structural = NULL, data)
 }
 \arguments{
 \item{non_parametric}{A formula (as implemented in \code{\link[=enw_formula]{enw_formula()}})
@@ -15,16 +15,13 @@ as it should be used for specifying report date related hazards vs time
 invariant hazards which should instead be modelled using the
 \code{non_parametric} argument of \code{\link[=enw_reference]{enw_reference()}}}
 
-\item{structural}{A formula with fixed effects and using only binary
-variables, and factors describing the known reporting structure (i.e weekday
-only reporting). The base case (i.e the first factor entry) should describe
-the dates for which reporting is possible. Internally dates with a non-zero
-element in the design matrix have their hazard set to 0. This can use
-features defined by report date as defined in \code{metareport} as produced by
-\code{\link[=enw_preprocess_data]{enw_preprocess_data()}}. Note that the intercept for this model is set to 0
-in order to allow all dates without other structural reasons to not be
-reported to be reported. Note that this feature is not yet available to
-users.}
+\item{structural}{A nested list of matrices by group and reference date
+describing the known reporting structure (i.e weekday only reporting).
+Each matrix should have dimensions of max_delay x max_delay, where
+each column represents the probability of an observation being reported
+on a specific day given the delay. This is particularly useful for
+modeling fixed reporting cycles, such as weekly reporting on Wednesdays
+as seen in the German hospitalization data example.}
 
 \item{data}{Output from \code{\link[=enw_preprocess_data]{enw_preprocess_data()}}.}
 }

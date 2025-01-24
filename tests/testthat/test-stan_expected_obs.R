@@ -75,7 +75,7 @@ test_that("expected_obs() aggregates probabilities correctly", {
                             times = 5),
                         rep(1, times = 5)), ncol = 30, byrow = TRUE)
   exp_obs <- expected_obs(
-    tar_obs, lh, length(lh), ref_as_p = 1, agg_probs = 1, agg_probs
+    tar_obs, lh, length(lh), ref_as_p = 1, 1, agg_probs
   )
   exp_output <- as.vector(tar_obs + log(agg_probs %*% exp(lh)))
   expect_equal(object = exp_obs, expected = exp_output, tolerance = 1e-15)

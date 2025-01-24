@@ -19,7 +19,7 @@ epinowcast_as_data <- function(...) {
 }
 
 skip_on_local <- function() {
-  if (on_ci() || Sys.getenv("LOCAL_OVERRIDE") != "true") {
+  if (on_ci()) {
     return(invisible(TRUE))
   }
   testthat::skip("Not on CI")

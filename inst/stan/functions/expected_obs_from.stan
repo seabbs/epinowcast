@@ -29,6 +29,18 @@
  *
  * @param ref_np Flag indicating presence of non-parametric reference effects.
  * 
+ * @param rep_agg_p An integer flag (0 or 1) indicating whether the reporting 
+ * probabilities should be aggregated. Set to 1 when the probabilities should 
+ * be aggregated, otherwise 0.
+ *
+ * @param rep_agg_indicator An array of matrices of integer flags (0 or 1) 
+ * representing the aggregation of reporting probabilities for each group and 
+ * reference time. Each matrix is designed to be left-multiplied to a column 
+ * vector of reporting probabilities. Presence of a 1 in a column indicates 
+ * that that index in the probability column vector will be aggregated, and 
+ * presence of a 1 in a row indicates that aggregated probability will be 
+ * placed on that index in the new probability vector.
+ * 
  * @return A vector of expected observations for the given index.
  * 
  * @note This function performs several steps:
@@ -47,7 +59,9 @@ vector expected_obs_from_index(int i, array[] vector imp_obs,
                                array[,] int rdlurd, vector srdlh,
                                matrix refp_lh, array[] int dpmfs, int ref_p,
                                int rep_h, int ref_as_p, int g, int t, int l,
-                               vector refnp_lh, int ref_np, int p) {
+                               vector refnp_lh, int ref_np, int p,
+                               int rep_agg_p, 
+                               array[,] matrix rep_agg_indicator) {
   vector[l] lh;
   vector[l] log_exp_obs;
   profile("model_likelihood_hazard_allocations") {
@@ -56,13 +70,16 @@ vector expected_obs_from_index(int i, array[] vector imp_obs,
       p
     );
   }
+  // Extract the reporting aggregation matrix for the given group and time
+  matrix[l, l] rep_agg_indicator_mat;
+  if (rep_agg_p == 1) {
+    rep_agg_indicator_mat = rep_agg_indicator[g][t][1:l, 1:l];
+  }
   // Find final observed/imputed expected observation
   // combine expected final obs and time effects to get expected obs
-  profile("model_likelihood_expected_obs") {    
-  int agg_probs = 0;
-  matrix[1, 1] agg_indicator;
-  agg_indicator[1, 1] = 0;
-  log_exp_obs = expected_obs(imp_obs[g][t], lh, l, ref_as_p, agg_probs, agg_indicator);
+  profile("model_likelihood_expected_obs") {
+    log_exp_obs = expected_obs(imp_obs[g][t], lh, l, ref_as_p, rep_agg_p,
+    rep_agg_indicator_mat);
   }
   return(log_exp_obs);
 }
@@ -97,7 +114,19 @@ vector expected_obs_from_index(int i, array[] vector imp_obs,
  * @param ref_np Flag for non-parametric reference effects.
  *
  * @param sdmax, csdmax Arrays of maximum start dates and cumulative start
-*  dates.
+ * dates.
+ *
+ * @param rep_agg_p An integer flag (0 or 1) indicating whether the reporting 
+ * probabilities should be aggregated. Set to 1 when the probabilities should 
+ * be aggregated, otherwise 0.
+ *
+ * @param rep_agg_indicator An array of matrices of integer flags (0 or 1) 
+ * representing the aggregation of reporting probabilities for each group and 
+ * reference time. Each matrix is designed to be left-multiplied to a column 
+ * vector of reporting probabilities. Presence of a 1 in a column indicates 
+ * that that index in the probability column vector will be aggregated, and 
+ * presence of a 1 in a row indicates that aggregated probability will be 
+ * placed on that index in the new probability vector.
  * 
  * @return A vector of expected observations across the specified range of 
  *         indexes.
@@ -121,7 +150,8 @@ vector expected_obs_from_snaps(int start, int end, array[] vector imp_obs,
                                array[] int sl, array[] int csl,
                                array[] int sg, array[] int st, int n,
                                vector refnp_lh, int ref_np, array[] int sdmax,
-                               array[] int csdmax) {
+                               array[] int csdmax, int rep_agg_p,
+                               array[,] matrix rep_agg_indicator) {
   vector[n] log_exp_obs;
   int ssnap = 1;
   int esnap = 0;
@@ -143,7 +173,7 @@ vector expected_obs_from_snaps(int start, int end, array[] vector imp_obs,
       esnap += l;
       log_exp_obs[ssnap:esnap] = expected_obs_from_index(
         i, imp_obs, rdlurd, srdlh, refp_lh, dpmfs, ref_p, rep_h, ref_as_p, g, t,
-        l, refnp_lh, ref_np, p
+        l, refnp_lh, ref_np, p, rep_agg_p, rep_agg_indicator
       );
       ssnap += l;
     }

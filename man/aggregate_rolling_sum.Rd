@@ -4,7 +4,7 @@
 \alias{aggregate_rolling_sum}
 \title{Internal function to perform rolling sum aggregation}
 \usage{
-aggregate_rolling_sum(dt, internal_timestep, by = NULL)
+aggregate_rolling_sum(dt, internal_timestep, by = NULL, value_col = "confirm")
 }
 \arguments{
 \item{dt}{A \code{data.table} to be aggregated.}
@@ -13,15 +13,17 @@ aggregate_rolling_sum(dt, internal_timestep, by = NULL)
 aggregate.}
 
 \item{by}{A character vector specifying the columns to aggregate by.}
+
+\item{value_col}{A character string specifying the column to aggregate.
+Defaults to "confirm".}
 }
 \value{
 A modified data.table with aggregated observations.
 }
 \description{
 This function takes a data.table and applies a rolling sum over a given
-timestep,
-aggregating by specified columns. It's particularly useful for aggregating
-observations over certain periods.
+timestep, aggregating by specified columns. It's particularly useful for
+aggregating observations over certain periods.
 }
 \seealso{
 Utility functions

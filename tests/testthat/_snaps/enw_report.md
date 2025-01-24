@@ -67,6 +67,12 @@
       attr(,"assign")
       [1] 0
       
+      $data$rep_agg_p
+      [1] 0
+      
+      $data$rep_agg_indicators
+      list()
+      
       $data$rep_t
       [1] 60
       

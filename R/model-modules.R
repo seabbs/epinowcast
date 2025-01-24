@@ -219,16 +219,13 @@ enw_reference <- function(
 #' invariant hazards which should instead be modelled using the
 #' `non_parametric` argument of [enw_reference()]
 #'
-#' @param structural A formula with fixed effects and using only binary
-#' variables, and factors describing the known reporting structure (i.e weekday
-#' only reporting). The base case (i.e the first factor entry) should describe
-#' the dates for which reporting is possible. Internally dates with a non-zero
-#' element in the design matrix have their hazard set to 0. This can use
-#' features defined by report date as defined in `metareport` as produced by
-#' [enw_preprocess_data()]. Note that the intercept for this model is set to 0
-#' in order to allow all dates without other structural reasons to not be
-#' reported to be reported. Note that this feature is not yet available to
-#' users.
+#' @param structural A nested list of matrices by group and reference date
+#' describing the known reporting structure (i.e weekday only reporting).
+#' Each matrix should have dimensions of max_delay x max_delay, where
+#' each column represents the probability of an observation being reported
+#' on a specific day given the delay. This is particularly useful for
+#' modeling fixed reporting cycles, such as weekly reporting on Wednesdays
+#' as seen in the German hospitalization data example.
 #'
 #' @inherit enw_reference return
 #' @inheritParams enw_obs
@@ -238,13 +235,7 @@ enw_reference <- function(
 #' @export
 #' @examples
 #' enw_report(data = enw_example("preprocessed"))
-enw_report <- function(non_parametric = ~0, structural = ~0, data) {
-  if (as_string_formula(structural) != "~0") {
-    cli::cli_abort(
-      "The structural reporting model has not yet been implemented"
-    )
-  }
-
+enw_report <- function(non_parametric = ~0, structural = NULL, data) {
   if (as_string_formula(non_parametric) == "~0") {
     non_parametric <- ~1
   }
@@ -258,6 +249,42 @@ enw_report <- function(non_parametric = ~0, structural = ~0, data) {
     form,
     prefix = "rep", drop_intercept = TRUE
   )
+
+  # Check for structural model and define
+  if (!is.null(structural)) {
+    cli::cli_alert_warning(
+      "The structural reporting model is in experimental development"
+    )
+    if (!is.list(structural) ||
+        length(structural) != data$groups[[1]] ||
+        !all(sapply(structural, function(x) length(x) == data$time[[1]])) ||
+        !all(sapply(structural, function(x) {
+          all(
+            sapply(
+              x, function(y) all(dim(y) == c(data$max_delay, data$max_delay))
+            )
+          )
+        })
+      )) {
+      cli::cli_abort(
+        paste0(
+          "`structural` should be a list of groups, each containing a list of ",
+          "reference times, where each entry is a matrix of Max Delay x Max
+           Delay."
+        )
+      )
+    }
+    data_list$rep_agg_p <- 1
+    data_list$rep_agg_indicators <- array(
+      unlist(structural),
+      dim = c(
+        data$groups[[1]], data$time[[1]], data$max_delay, data$max_delay
+      )
+    )
+  } else {
+    data_list$rep_agg_p <- 0
+    data_list$rep_agg_indicators <- list()
+  }
 
   # map report date effects to groups and times
   data_list$rep_findex <- t(
