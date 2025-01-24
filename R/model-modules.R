@@ -358,7 +358,7 @@ enw_expectation <- function(r = ~ 0 + (1 | day:.group), generation_time = 1,
   if (as_string_formula(observation) == "~0") {
     observation <- ~1
   }
-  if (sum(generation_time) != 1) {
+  if (abs(sum(generation_time) - 1) > 1e-3) {
     cli::cli_abort("The generation time must sum to 1")
   }
 

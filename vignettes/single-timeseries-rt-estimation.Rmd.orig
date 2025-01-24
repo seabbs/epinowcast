@@ -82,14 +82,15 @@ library(epinowcast)
 library(data.table)
 library(purrr)
 library(ggplot2)
+library(primarycensored)
 ```
 
 ::: {.alert .alert-warning}
 
 - Here we make use of `data.table` for simple data transformations but tools from the tidyverse or base R tools could just as easily be used;
 - We also use `purrr` to make use of the `partial()` function which allows us to partially specify a function for later reuse. This is useful for specifying the model as we can specify the parts of the model that are common to all models and then specify the parts that are specific to each model when we call the updated function;
-- Finally, we use `ggplot2` for plotting.
-
+- We use `ggplot2` for plotting.
+- We use `primarycensored` for simulating the primary censored and right truncated processes need to correctly model the discrete delays.
 :::
 
 ## Introducing the data: COVID-19 hospitalisations in Germany
@@ -313,11 +314,8 @@ gamma_shape <- gamma_mean^2 / gamma_sd^2
 gamma_scale <- gamma_sd^2 / gamma_mean
 
 # then discretise the distribution
-gt_pmf <- simulate_double_censored_pmf(
-  max = 15, shape = gamma_shape, scale = gamma_scale, fun_dist = rgamma
-) |>
-# and normalise it to account for right truncation
-  (\(x) x / sum(x))()
+gt_pmf <- 0:14 |>
+  dpcens(pgamma, shape = gamma_shape, scale = gamma_scale, D = 15)
 
 plot(gt_pmf)
 ```
@@ -336,11 +334,8 @@ meanlog <- log(lgn_mean^2 / sqrt(lgn_sd^2 + lgn_mean^2))
 sdlog <- sqrt(log(1 + lgn_sd^2 / lgn_mean^2))
 
 # then discretise the distribution
-reporting_pmf <- simulate_double_censored_pmf(
-  max = 15, meanlog = meanlog, sdlog = sdlog, fun_dist = rlnorm
-) |>
-# normalise it to account for right truncation
-  (\(x) x / sum(x))() |>
+reporting_pmf <- 0:14 |>
+  dpcens(plnorm, meanlog = meanlog, sdlog = sdlog, D = 15) |>
 # and scale it by the infection to hospitalisation ration (2%)
   (\(x) x * 0.02)()
 
