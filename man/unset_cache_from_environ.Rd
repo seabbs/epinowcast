@@ -7,7 +7,7 @@
 unset_cache_from_environ(alert_on_not_set = TRUE)
 }
 \arguments{
-\item{alter_on_not_set}{A logical value indicating whether to display a
+\item{alert_on_not_set}{A logical value indicating whether to display a
 warning message if the \code{enw_cache_location} setting is not found in the
 \code{.Renviron} file. Defaults to \code{TRUE}.}
 }

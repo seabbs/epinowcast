@@ -349,7 +349,7 @@ get_renviron_contents <- function() {
 #' setting is found and successfully removed, a success message is displayed.
 #' If the setting is not found, a warning message is displayed.
 #'
-#' @param alter_on_not_set A logical value indicating whether to display a
+#' @param alert_on_not_set A logical value indicating whether to display a
 #' warning message if the `enw_cache_location` setting is not found in the
 #' `.Renviron` file. Defaults to `TRUE`.
 #'

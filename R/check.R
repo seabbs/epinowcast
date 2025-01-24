@@ -235,7 +235,7 @@ coerce_dt <- function(
 
   if (dates) {
     dt[
-      , # cast-in-place to IDateTime (as.IDate)
+      ,
       c("report_date", "reference_date") := .(
         as.IDate(report_date), as.IDate(reference_date)
       )

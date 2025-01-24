@@ -6,7 +6,6 @@ Bisaloo
 CMD
 COVID
 CmdStan
-CmdStanModel
 CmdStanR
 Codecov
 Discretisation
@@ -21,7 +20,6 @@ Gulfa
 HMC
 HalfNormal
 Höhle
-IDate
 INLA
 ImperialCollegeLondon
 LFO
@@ -56,7 +54,6 @@ athowes
 beansrowning
 choi
 christinesangphet
-cmdstanr
 com
 cyclomatic
 dataconverters
@@ -80,8 +77,8 @@ jbracher
 jessalynnsebastian
 jhellewell
 jimrothstein
-kathsherratt
 kaitejohnson
+kathsherratt
 leq
 linelist
 linters
@@ -135,6 +132,7 @@ runtimes
 rw
 samplerParams
 sbfnk
+scoringutils
 sd
 seabbs
 settingPriors
@@ -157,3 +155,6 @@ unmodelled
 unsets
 warmup
 zsusswein
+cmdstanr
+IDate
+CmdStanModel

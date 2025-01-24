@@ -49,7 +49,7 @@ library(knitr)
 This vignette includes several models that take upwards of 30 minutes to fit to data on a moderately equipped laptop. To speed up model fitting if more CPUs are available set the number of threads used per chain to half the number of real cores available (here 6 as we are using 2 MCMC chains and have 12 real cores available). Note this may cause conflicts with other processes running on your computer and if this is an issue reduce the number of threads used.
 
 ```{r, eval  = TRUE}
-threads <- floor(min(max(1, parallel::detectCores() /  4), 6))
+threads <- floor(min(max(1, parallel::detectCores() /  2), 6))
 options(mc.cores = 2)
 ```
 
@@ -299,12 +299,7 @@ independent_epinowcast <- function(obs, max_delay = 40, ...) {
     ),
      ...
   )
-
-  nowcast_summary <- summary(
-    nowcast,
-    probs = c(0.025, 0.05, seq(0.1, 0.9, by = 0.1), 0.95, 0.975)
-  )
-  return(nowcast_summary)
+  return(nowcast)
 }
 ```
 
@@ -318,21 +313,26 @@ independent_nowcast <- map(
   independent_epinowcast,
   fit = enw_fit_opts(
     save_warmup = FALSE, output_loglik = TRUE, pp = TRUE,
-    chains = 2, threads_per_chain = threads, 
+    chains = 2, threads_per_chain = threads,
     iter_sampling = 500, iter_warmup = 500,
     show_messages = FALSE, refresh = 0,
     adapt_delta = 0.95, max_treedepth = 12
   ),
   priors = priors
 )
-independent_nowcast <- rbindlist(independent_nowcast)
+
+independent_nowcast_summary <- map_dfr(
+  independent_nowcast,
+  summary,
+  probs = c(0.025, 0.05, seq(0.1, 0.9, by = 0.1), 0.95, 0.975)
+)
 ```
 
 As we now have the summarised nowcasts rather than an object of class `epinowcast` we need to make use of the underlying plot function ourselves. Doing so we see that performance is generally quite good across the board though the width of credible intervals has also increased. Importantly the 35-59 year old age group is being captured at least as well as in the hierarchical models with only minor reductions in performance in other age groups. This suggests that for this dataset and nowcast date there may be relatively little benefit to jointly modelling age groups.
 
 ```{r ind_nowcast, height = 9, width = 9}
 enw_plot_nowcast_quantiles(
-  independent_nowcast, latest_obs = latest_nat_germany
+  independent_nowcast_summary, latest_obs = latest_nat_germany
 ) +
   facet_wrap(vars(age_group), scales = "free_y")
 ```
@@ -369,7 +369,7 @@ summarised_nowcasts <- map(
   nowcasts, summary,
   probs = c(0.025, 0.05, seq(0.1, 0.9, by = 0.1), 0.95, 0.975)
 )
-summarised_nowcasts$`Independent by age, Reference: Week, Report: Day of week` <- independent_nowcast # nolint
+summarised_nowcasts$`Independent by age, Reference: Week, Report: Day of week` <- independent_nowcast_summary # nolint
 
 summarised_nowcasts <- rbindlist(summarised_nowcasts, idcol = "model",
                                  use.names = TRUE)
@@ -400,44 +400,60 @@ enw_plot_nowcast_quantiles(
 As a crude measure of general out of sample performance we can use the leave one out information criterion as supplied by the `loo` package though note this is not typically appropriate for time series data ([where approximate LFO cross validation is likely to perform better](https://cran.r-project.org/web//packages/loo/vignettes/loo2-lfo.html)), the approximation used here to avoid refitting is likely to be poor, and we are not accounting for this by refitting the model as required.
 
 ```{r}
-loos <- map(nowcasts, ~ .$fit[[1]]$loo())
+loos <- map(nowcasts, \(x) x$fit[[1]]$loo())
 loo_compare(loos)
 ```
 
 We see that the most model which includes day of the week effects for the date of report substantially outperformed the baseline model with no adjustment and that the more complex models that adjusted for variation by age and week for the date of test improved estimated out of sample performance but uncertainty around these estimates was wide.
 
-More rigorously, we can evaluate the nowcasts using proper scoring rules from the `scoringutils` package including the weighted interval score. Here we limit the nowcasts scored to the last 7 days of data to make interpretation easier, transform nowcasts into format required for `scoringutils`, link with the latest available data, and the finally call `scoringutils::eval_forecasts()`. Note that as we are only scoring a single nowcasts it is difficult to generalise our findings as this one day of reporting may have been unusual. To have a more informed view of which model to pick we would ideally nowcast a range of dates and evaluate each of them.
+More rigorously, we can evaluate the nowcasts using proper scoring rules from the `scoringutils` package including the continuous ranked probability score.
+Here we limit the nowcasts scored to the last 7 days of data to make interpretation easier, transform nowcasts into format required for `scoringutils`, link with the latest available data, and the finally call `scoringutils::score()`.
+Note that as we are only scoring a single nowcasts it is difficult to generalise our findings as this one day of reporting may have been unusual. To have a more informed view of which model to pick we would ideally nowcast a range of dates and evaluate each of them.
 
-As a first step we score overall performance. Here we see that the baseline model with no variation actually performs very well with only models that include at least day of the week, age groups and variation by week performing comparably. Other performance characteristics are relatively similar across models (with all models being biased towards underprediction for example). 
+As a first step we score overall performance.
+Here we see that the baseline model with no variation actually performs very well with only models that include at least day of the week, age groups and variation by week performing comparably.
+Other performance characteristics are relatively similar across models (with all models being biased towards underprediction for example). 
 
 ```{r}
-score <- enw_score_nowcast(
- summarised_nowcasts,
- latest_nat_germany[reference_date > (max(reference_date) - 7)]
-)
+eval_obs <- latest_nat_germany[reference_date > (max(reference_date) - 7)]
+scores <- map_dfr(
+  nowcasts, as_forecast_sample, eval_obs, .id = "model"
+) |>
+  rbind(
+    independent_nowcast |>
+      map_dfr(as_forecast_sample, eval_obs) |>
+      within({
+        model <- "Independent by age, Reference: Week, Report: Day of week"
+      }),
+      fill = TRUE
+  ) |>
+  as.data.table() |>
+  as_forecast_sample() |>
+  score()
 
-score |>
+
+scores |>
   summarise_scores(by = "model") |>
+  summarise_scores(fun = signif, digits = 2, by = "model") |>
   kable()
 ```
 
-Finally we look across all scores relative to the simple model with no variation. This nicely captures the role of the last data point on performance but also highlights more variation across reference dates and age groups between models. The difference in performance between the hierarchical by age models and the model that treats age groups independently is also very clear.
+Finally we look across all scores relative to the simple model with no variation.
+This nicely captures the role of the last data point on performance but also highlights more variation across reference dates and age groups between models.
+The difference in performance between the hierarchical by age models and the model that treats age groups independently is also very clear.
 
 ```{r performance, fig.width = 9, fig.height = 9}
-age_date_score <- score |>
+relative_scores <- scores |>
+  add_relative_skill(
+    by = c("reference_date", "age_group"),
+    baseline = "Reference: Fixed, Report: Fixed"
+  ) |>
   summarise_scores(by = c("model", "reference_date", "age_group"))
-fixed_score <- age_date_score[
-  model == "Reference: Fixed, Report: Fixed",
-  .(reference_date, age_group, fixed_is = interval_score)
-]
-age_date_score <- merge(
-  age_date_score, fixed_score, by = c("reference_date", "age_group")
-)
 
-age_date_score <- age_date_score[, interval_score := interval_score / fixed_is]
-age_date_score <- age_date_score[!model == "Reference: Fixed, Report: Fixed"]
-plot <- ggplot(age_date_score) +
-  aes(x = reference_date, y = interval_score, col = model) +
+
+relative_scores <- relative_scores[!model == "Reference: Fixed, Report: Fixed"]
+plot <- ggplot(relative_scores) +
+  aes(x = reference_date, y = crps_scaled_relative_skill, col = model) +
   geom_hline(yintercept = 1, linetype = 2, linewidth = 1.2, alpha = 0.5) +
   geom_line(linewidth = 1.1, alpha = 0.6) +
   geom_point(size = 1.2) +
